@@ -1,0 +1,4 @@
+# Folder for the days' inputs. Do not redisribute
+app/data/*
+# Build folder
+dist-newstyle/
