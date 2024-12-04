@@ -2,12 +2,13 @@ module Main where
 
 import Day01 (part1, part2)
 import Day02 (part1, part2)
+import Day03 (part1, part2)
 
 main :: IO ()
 main = day dayNum testNum
   where 
     -- The day to run
-    dayNum = 2
+    dayNum = 3
     -- Which test to run. 0 for the full input (dayN.txt), other number for a test (e.g. day3-e2.txt)
     testNum = 0
 
@@ -24,6 +25,8 @@ getDayPart d p = case (d,p) of
   (1,2) -> Day01.part2
   (2,1) -> Day02.part1
   (2,2) -> Day02.part2
+  (3,1) -> Day03.part1
+  (3,2) -> Day03.part2
   _ -> error "Unknown day part"
 
 getInput :: Int -> IO String

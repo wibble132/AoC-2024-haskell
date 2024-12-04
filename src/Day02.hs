@@ -28,6 +28,7 @@ isSafe (Levels (a : b : rest)) = inner a b rest
     inner _ _ _ = False
 isSafe _ = False
 
+-- This could be done in linear time per Report, but this is easy enough
 isAlmostSafe :: Report -> Bool
 isAlmostSafe r | isSafe r = True
 isAlmostSafe (Levels levels) = inner [] levels

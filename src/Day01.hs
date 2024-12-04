@@ -13,7 +13,7 @@ readinput :: String -> [[Integer]]
 readinput = transpose . map ((map read :: [String] -> [Integer]) . splitOn "   ") . lines
 
 similarityScore :: ([Integer], [Integer]) -> Integer
-similarityScore (x : xs, rhs) = x * count (== x) rhs + similarityScore (xs, rhs)
+similarityScore (x : xs, rhs) = x * count (x ==) rhs + similarityScore (xs, rhs)
 similarityScore ([], _) = 0
 
 toPairs :: [[a]] -> [(a, a)]

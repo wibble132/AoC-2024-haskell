@@ -55,9 +55,8 @@ library
     import:           warnings
 
     -- Modules exported by the library.
-    exposed-modules: 
-        MyLib,
-        Day01, Day02
+    exposed-modules:
+        Day01, Day02, Day03
 
     -- Modules included in this library but not exported.
     -- other-modules:
@@ -68,7 +67,8 @@ library
     -- Other library packages from which modules are imported.
     build-depends:
         base ^>=4.17.2.1,
-        split ^>=0.1.2.3
+        split ^>=0.1.2.3,
+        parsec
 
     -- Directories containing source files.
     hs-source-dirs:   src
