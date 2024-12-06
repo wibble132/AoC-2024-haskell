@@ -4,14 +4,15 @@ import Day01 (part1, part2)
 import Day02 (part1, part2)
 import Day03 (part1, part2)
 import Day04 (part1, part2)
+import Day05 (part1, part2)
 
 main :: IO ()
 main = day dayNum testNum
   where
     -- The day to run
-    dayNum = 4
+    dayNum = 5
     -- Which test to run. 0 for the full input (dayN.txt), other number for a test (e.g. day3-e2.txt)
-    testNum = 0
+    testNum = 1
 
 day :: Int -> Int -> IO ()
 day d i = do
@@ -30,6 +31,8 @@ getDayPart d p = case (d, p) of
   (3, 2) -> Day03.part2
   (4, 1) -> Day04.part1
   (4, 2) -> Day04.part2
+  (5, 1) -> Day05.part1
+  (5, 2) -> Day05.part2
   _ -> error "Unknown day part"
 
 getInput :: Int -> IO String
@@ -37,3 +40,6 @@ getInput d = readFile ("app/data/day" ++ show d ++ ".txt")
 
 getExample :: Int -> Int -> IO String
 getExample d exNum = readFile ("app/data/day" ++ show d ++ "-e" ++ show exNum ++ ".txt")
+
+getExample' :: Int -> Int -> IO String
+getExample'= ((readFile . ("app/data/day" ++)) .) . (. (("-e" ++) . (++ ".txt") . show)) . (++) . show
