@@ -56,7 +56,8 @@ library
 
     -- Modules exported by the library.
     exposed-modules:
-        Day01, Day02, Day03, Day04, Day05
+        Day01, Day02, Day03, Day04, Day05,
+        Day06
 
     -- Modules included in this library but not exported.
     -- other-modules:
@@ -66,9 +67,10 @@ library
 
     -- Other library packages from which modules are imported.
     build-depends:
-        base ^>=4.17.2.1,
+        base ^>=4.19.1.0,
         split ^>=0.1.2.3,
-        parsec
+        parsec,
+        containers ^>=0.7
 
     -- Directories containing source files.
     hs-source-dirs:   src
@@ -91,7 +93,7 @@ executable AoC2024-haskell
 
     -- Other library packages from which modules are imported.
     build-depends:
-        base ^>=4.17.2.1,
+        base ^>=4.19.1.0,
         AoC2024-haskell
 
     -- Directories containing source files.
@@ -124,5 +126,5 @@ test-suite AoC2024-haskell-test
 
     -- Test dependencies.
     build-depends:
-        base ^>=4.17.2.1,
+        base ^>=4.19.1.0,
         AoC2024-haskell

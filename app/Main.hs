@@ -5,14 +5,15 @@ import Day02 (part1, part2)
 import Day03 (part1, part2)
 import Day04 (part1, part2)
 import Day05 (part1, part2)
+import Day06 (part1, part2)
 
 main :: IO ()
 main = day dayNum testNum
   where
     -- The day to run
-    dayNum = 5
+    dayNum = 6
     -- Which test to run. 0 for the full input (dayN.txt), other number for a test (e.g. day3-e2.txt)
-    testNum = 1
+    testNum = 0
 
 day :: Int -> Int -> IO ()
 day d i = do
@@ -33,6 +34,8 @@ getDayPart d p = case (d, p) of
   (4, 2) -> Day04.part2
   (5, 1) -> Day05.part1
   (5, 2) -> Day05.part2
+  (6, 1) -> Day06.part1
+  (6, 2) -> Day06.part2
   _ -> error "Unknown day part"
 
 getInput :: Int -> IO String
