@@ -1,29 +1,30 @@
-module Day01 (part1, part2) where
+module Day01 (part1, part2, readInput) where
 
-import Data.List (sort, transpose)
-import Data.List.Split (splitOn)
+import Control.Arrow (first)
+import Data.Bifunctor (bimap)
+import Data.List (sort, stripPrefix)
+import Data.Maybe (fromJust)
 
-part1 :: String -> String
-part1 = show . sum . map (\(a, b) -> abs (a - b)) . toPairs . transpose . map sort . readinput
+part1 :: ([Int], [Int]) -> Int
+part1 = sum . map (uncurry ((abs .) . (-))) . uncurry zip . both sort
 
-part2 :: String -> String
-part2 = show . similarityScore . toLists . readinput
+part2 :: ([Int], [Int]) -> Int
+part2 = similarityScore
 
-readinput :: String -> [[Integer]]
-readinput = transpose . map ((map read :: [String] -> [Integer]) . splitOn "   ") . lines
+readInput :: String -> ([Int], [Int])
+readInput = unzip . map (bimap read read . fromJust . stripInfix "   ") . lines
 
-similarityScore :: ([Integer], [Integer]) -> Integer
+similarityScore :: ([Int], [Int]) -> Int
 similarityScore (x : xs, rhs) = x * count (x ==) rhs + similarityScore (xs, rhs)
 similarityScore ([], _) = 0
 
-toPairs :: [[a]] -> [(a, a)]
-toPairs ([x, y] : c) = (x, y) : toPairs c
-toPairs [] = []
-toPairs _ = error "Bad input"
+count :: (a -> Bool) -> [a] -> Int
+count p = length . filter p
 
-toLists :: [[a]] -> ([a], [a])
-toLists [x, y] = (x, y)
-toLists _ = error "Bad input"
+stripInfix :: (Eq a) => [a] -> [a] -> Maybe ([a], [a])
+stripInfix needle haystack | Just rest <- stripPrefix needle haystack = Just ([], rest)
+stripInfix _ [] = Nothing
+stripInfix needle (x : xs) = first (x :) <$> stripInfix needle xs
 
-count :: (a -> Bool) -> [a] -> Integer
-count p = toInteger . length . filter p
+both :: (a -> b) -> (a, a) -> (b, b)
+both f = bimap f f
