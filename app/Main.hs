@@ -9,27 +9,27 @@ import Day06 (part1, part2)
 import Day07 (part1, part2, readInput)
 import Day08 (part1, part2, readInput)
 import Day09 (part1, part2, readInput1, readInput2)
-
--- import Criterion.Main
-
-main :: IO ()
-main = day dayNum testNum
-  where
-    -- The day to run
-    dayNum = 9
-    -- Which test to run. 0 for the full input (dayN.txt), other number for a test (e.g. day3-e2.txt)
-    testNum = 0
+import Day10 (part1, part2, readInput)
 
 -- main :: IO ()
--- main = do
---   input <- getInput 7
---   let parsedInput = Day07.readInput input
---   defaultMain [
---     bgroup "day 7" [
---       bench "parse" $ whnf Day07.readInput input,
---       bench "Part 1" $ whnf Day07.part1 parsedInput,
---       bench "Part 2" $ whnf Day07.part2 parsedInput
---     ]]
+-- main = day dayNum testNum
+--   where
+--     -- The day to run
+--     dayNum = 10
+--     -- Which test to run. 0 for the full input (dayN.txt), other number for a test (e.g. day3-e2.txt)
+--     testNum = 0
+
+import Criterion.Main (defaultMain, bgroup, bench, whnf)
+main :: IO ()
+main = do
+  input <- getInput 10
+  let !parsedInput = Day10.readInput input
+  defaultMain [
+    bgroup "day 10" [
+      bench "parse" $ whnf Day10.readInput input,
+      bench "Part 1" $ whnf Day10.part1 parsedInput,
+      bench "Part 2" $ whnf Day10.part2 parsedInput
+    ]]
 
 
 day :: Int -> Int -> IO ()
@@ -60,6 +60,8 @@ getDayPart d p = case (d, p) of
   (8, 2) -> show . Day08.part2 . Day08.readInput
   (9, 1) -> show . Day09.part1 . Day09.readInput1
   (9, 2) -> Day09.part2 . Day09.readInput2
+  (10, 1) -> Day10.part1 . Day10.readInput
+  (10, 2) -> Day10.part2 . Day10.readInput
   _ -> error "Unknown day part"
 
 getInput :: Int -> IO String

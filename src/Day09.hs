@@ -105,7 +105,7 @@ squashSpaces = V.fromList . inner . V.toList
     -- Remove spaces of length 0
     inner (a : xs) | sLength a == 0 = inner xs
     -- Merge adjacent spaces
-    inner (a : b : xs) | sPos b == sPos a + sLength a = Space (sPos a) (sLength a + sLength b) : inner xs
+    inner (a : b : xs) | sPos b == sPos a + sLength a = Space (sPos a) (sLength a + sLength b) : inner (b : xs)
     -- Otherwise continue iterating
     inner (a : xs) = a : inner xs
     -- Finished

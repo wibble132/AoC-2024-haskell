@@ -57,7 +57,7 @@ library
     -- Modules exported by the library.
     exposed-modules:
         Day01, Day02, Day03, Day04, Day05,
-        Day06, Day07, Day08, Day09,
+        Day06, Day07, Day08, Day09, Day10
 
     -- Modules included in this library but not exported.
     -- other-modules:
@@ -71,7 +71,8 @@ library
         split ^>=0.1.2.3,
         parsec,
         containers ^>=0.7,
-        vector
+        vector,
+        array
 
     -- Directories containing source files.
     hs-source-dirs:   src
