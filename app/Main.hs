@@ -10,27 +10,30 @@ import Day07 (part1, part2, readInput)
 import Day08 (part1, part2, readInput)
 import Day09 (part1, part2, readInput1, readInput2)
 import Day10 (part1, part2, readInput)
+import Day11 (part1, part2, readInput)
+
+-- import Criterion.Main (bench, bgroup, defaultMain, whnf)
+
+main :: IO ()
+main = day dayNum testNum
+  where
+    -- The day to run
+    dayNum = 11
+    -- Which test to run. 0 for the full input (dayN.txt), other number for a test (e.g. day3-e2.txt)
+    testNum = 0
 
 -- main :: IO ()
--- main = day dayNum testNum
---   where
---     -- The day to run
---     dayNum = 10
---     -- Which test to run. 0 for the full input (dayN.txt), other number for a test (e.g. day3-e2.txt)
---     testNum = 0
-
-import Criterion.Main (defaultMain, bgroup, bench, whnf)
-main :: IO ()
-main = do
-  input <- getInput 10
-  let !parsedInput = Day10.readInput input
-  defaultMain [
-    bgroup "day 10" [
-      bench "parse" $ whnf Day10.readInput input,
-      bench "Part 1" $ whnf Day10.part1 parsedInput,
-      bench "Part 2" $ whnf Day10.part2 parsedInput
-    ]]
-
+-- main = do
+--   input <- getInput 11
+--   let !parsedInput = Day11.readInput input
+--   defaultMain
+--     [ bgroup
+--         "day 11"
+--         [ bench "parse" $ whnf Day11.readInput input,
+--           bench "Part 1" $ whnf Day11.part1 parsedInput,
+--           bench "Part 2" $ whnf Day11.part2 parsedInput
+--         ]
+--     ]
 
 day :: Int -> Int -> IO ()
 day d i = do
@@ -38,7 +41,6 @@ day d i = do
   input <- if i == 0 then getInput d else getExample d i
   putStrLn $ getDayPart d 1 input
   putStrLn $ getDayPart d 2 input
-
 
 getDayPart :: Int -> Int -> (String -> String)
 getDayPart d p = case (d, p) of
@@ -62,6 +64,8 @@ getDayPart d p = case (d, p) of
   (9, 2) -> Day09.part2 . Day09.readInput2
   (10, 1) -> Day10.part1 . Day10.readInput
   (10, 2) -> Day10.part2 . Day10.readInput
+  (11, 1) -> Day11.part1 . Day11.readInput
+  (11, 2) -> Day11.part2 . Day11.readInput
   _ -> error "Unknown day part"
 
 getInput :: Int -> IO String
@@ -71,4 +75,4 @@ getExample :: Int -> Int -> IO String
 getExample d exNum = readFile ("app/data/day" ++ show d ++ "-e" ++ show exNum ++ ".txt")
 
 getExample' :: Int -> Int -> IO String
-getExample'= ((readFile . ("app/data/day" ++)) .) . (. (("-e" ++) . (++ ".txt") . show)) . (++) . show
+getExample' = ((readFile . ("app/data/day" ++)) .) . (. (("-e" ++) . (++ ".txt") . show)) . (++) . show
