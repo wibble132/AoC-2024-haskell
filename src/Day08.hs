@@ -2,7 +2,6 @@ module Day08 (part1, part2, readInput) where
 
 import Data.Bifunctor (bimap)
 import Data.Ix (inRange)
-import Data.List (foldl')
 import Data.Map (Map)
 import Data.Map qualified as M
 import Data.Set (Set)

@@ -12,28 +12,28 @@ import Day09 (part1, part2, readInput1, readInput2)
 import Day10 (part1, part2, readInput)
 import Day11 (part1, part2, readInput)
 
--- import Criterion.Main (bench, bgroup, defaultMain, whnf)
-
-main :: IO ()
-main = day dayNum testNum
-  where
-    -- The day to run
-    dayNum = 11
-    -- Which test to run. 0 for the full input (dayN.txt), other number for a test (e.g. day3-e2.txt)
-    testNum = 0
+import Criterion.Main (bench, bgroup, defaultMain, whnf)
 
 -- main :: IO ()
--- main = do
---   input <- getInput 11
---   let !parsedInput = Day11.readInput input
---   defaultMain
---     [ bgroup
---         "day 11"
---         [ bench "parse" $ whnf Day11.readInput input,
---           bench "Part 1" $ whnf Day11.part1 parsedInput,
---           bench "Part 2" $ whnf Day11.part2 parsedInput
---         ]
---     ]
+-- main = day dayNum testNum
+--   where
+--     -- The day to run
+--     dayNum = 11
+--     -- Which test to run. 0 for the full input (dayN.txt), other number for a test (e.g. day3-e2.txt)
+--     testNum = 0
+
+main :: IO ()
+main = do
+  input <- getInput 11
+  let !parsedInput = Day11.readInput input
+  defaultMain
+    [ bgroup
+        "day 11"
+        [ bench "parse" $ whnf Day11.readInput input,
+          bench "Part 1" $ whnf Day11.part1 parsedInput,
+          bench "Part 2" $ whnf Day11.part2 parsedInput
+        ]
+    ]
 
 day :: Int -> Int -> IO ()
 day d i = do

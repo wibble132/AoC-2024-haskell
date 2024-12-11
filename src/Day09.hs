@@ -2,7 +2,6 @@ module Day09 (part1, part2, readInput1, readInput2) where
 
 import Data.Bifunctor (bimap)
 import Data.Char (digitToInt)
-import Data.Foldable (foldl')
 import Data.List (find)
 import Data.Vector (Vector)
 import Data.Vector qualified as V

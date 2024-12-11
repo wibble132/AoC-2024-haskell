@@ -1,5 +1,6 @@
 module Day04 (part1, part2) where
 
+import Data.Maybe (fromJust, listToMaybe)
 import GHC.Arr qualified as Arr
 
 part1 :: String -> String
@@ -9,7 +10,10 @@ part2 :: String -> String
 part2 = show . findCrossMas . parseGrid
 
 parseGrid :: String -> Arr.Array (Int, Int) Char
-parseGrid input = Arr.array ((0, 0), ((length . lines $ input) - 1, (length . head . lines $ input) - 1)) . withIndex2D . lines $ input
+parseGrid input = Arr.array ((0, 0), maxBounds) . withIndex2D $ l
+  where
+    l = lines input
+    maxBounds = ((length l) - 1, (length . fromJust . listToMaybe $ l) - 1)
 
 withIndex2D :: [[a]] -> [((Int, Int), a)]
 withIndex2D = concat . zipWith (\i xs -> zipWith (\j y -> ((i, j), y)) [0 ..] xs) [0 ..]
