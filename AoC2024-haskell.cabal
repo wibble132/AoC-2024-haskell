@@ -58,10 +58,11 @@ library
     exposed-modules:
         Day01, Day02, Day03, Day04, Day05,
         Day06, Day07, Day08, Day09, Day10,
-        Day11,
+        Day11, Day12,
 
     -- Modules included in this library but not exported.
-    -- other-modules:
+    other-modules:
+        Utils
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
