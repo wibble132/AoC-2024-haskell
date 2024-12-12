@@ -7,16 +7,12 @@ import Data.Array qualified as A
 import Data.Bifunctor (bimap)
 import Data.Set (Set)
 import Data.Set qualified as S
--- import Debug.Trace (trace)
-trace :: String -> a -> a
-trace = const id
 
 part1 :: Input -> String
 part1 = show . totalPrice
 
 part2 :: Input -> String
 part2 = show . totalPriceDiscounted
--- part2 = unlines . map show . totalPriceDiscounted
 
 type Position = (Int, Int)
 
@@ -100,14 +96,40 @@ neighbours bounds (x, y) =
 totalPriceDiscounted :: Input -> Int
 totalPriceDiscounted a = sum . map (\x -> (sideCount x * area x)) $ regions
   where
-    regions :: [[Position]]
-    regions = getRegions a
+    regions :: [Set Position]
+    regions = getRegions' a
 
-    area :: [Position] -> Int
+    area :: Set Position -> Int
     area = length
 
-sideCount :: [Position] -> Int
-sideCount r = sum $ map (trace "" $ sideContribution $ S.fromList r) r
+getRegions' :: Input -> [Set Position]
+getRegions' a = foldl' step [] (A.indices a)
+  where
+    step :: [Set Position] -> Position -> [Set Position]
+    step ps p | any (p `elem`) ps = ps
+    step ps p = findRegionFrom' a p : ps
+
+findRegionFrom' :: Input -> Position -> Set Position
+findRegionFrom' a p = step (S.singleton p) p
+  where
+    bounds = A.bounds a
+
+    step :: Set Position -> Position -> Set Position
+    step searched next = foldl' step nextNeighbours validNeighbours
+      where
+        c = a A.! next
+        validNeighbours =
+          -- Must have not already visited
+          filter (`S.notMember` searched)
+            -- Must be same character as at `next`
+            . filter ((c ==) . (a A.!))
+            $ nbours
+        nbours = neighbours bounds next
+
+        nextNeighbours = searched `S.union` S.fromList validNeighbours
+
+sideCount :: Set Position -> Int
+sideCount r = S.foldl' ((. sideContribution r) . (+)) 0 r
 
 sideContribution :: Set Position -> Position -> Int
 sideContribution r p = length $ filter (uncurry isCorner) ops
@@ -116,11 +138,7 @@ sideContribution r p = length $ filter (uncurry isCorner) ops
     ops = map (bimap ($ 1) ($ 1)) $ join (liftM2 (,)) [(+), flip (-)]
 
     isCorner :: (Int -> Int) -> (Int -> Int) -> Bool
-    isCorner fX fY = trace (show p ++ " " ++ show (px, pxy, py) ++ " " ++ show res) res
+    isCorner fX fY = res
       where
-        px = first fX p
-        py = second fY p
-        pxy = first fX py
-
-        (a, b, c) = (pxy `S.member` r, px `S.member` r, py `S.member` r)
+        (a, b, c) = (bimap fX fY p `S.member` r, first fX p `S.member` r, second fY p `S.member` r)
         res = (not a && (b == c)) || (a && not b && not c)
