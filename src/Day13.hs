@@ -85,6 +85,7 @@ findButtonCounts m
 both :: (a -> b) -> (a, a) -> (b, b)
 both = join bimap
 
+
 ------ PART 2 ------
 
 mapPrize :: (Integer -> Integer) -> ClawMachine -> ClawMachine

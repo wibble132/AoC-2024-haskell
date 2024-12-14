@@ -6,6 +6,7 @@ module Day11 (part1, part2, readInput) where
 import Data.List.Split (splitOn)
 import Data.MultiSet (MultiSet)
 import Data.MultiSet qualified as MS
+import Utils (iterateN)
 
 part1 :: [Integer] -> String
 part1 = show . blink 25
@@ -48,9 +49,6 @@ blink' stepCount = MS.size . iterateN stepCount step . MS.fromList
   where
     step :: MultiSet Int -> MultiSet Int
     step = MS.concatMap blinkStone'
-
-iterateN :: Int -> (a -> a) -> (a -> a)
-iterateN n = ((!! n) .) . iterate
 
 blinkStone' :: Int -> [Int]
 blinkStone' 0 = [1]
