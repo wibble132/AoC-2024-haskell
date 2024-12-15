@@ -1,7 +1,19 @@
-module Utils (windows, both, each, (.:), iterateN) where
+module Utils
+  ( windows,
+    both,
+    each,
+    (.:),
+    iterateN,
+    withPositions,
+    Position,
+    toArray,
+  )
+where
 
 import Control.Monad (join)
-import Data.Bifunctor (bimap)
+import Data.Array (Array)
+import Data.Array qualified as A
+import Data.Bifunctor (bimap, first)
 import Data.List (tails)
 
 windows :: Int -> [a] -> [[a]]
@@ -24,3 +36,11 @@ infixr 8 .:
 -- Apply a function n times
 iterateN :: Int -> (a -> a) -> (a -> a)
 iterateN n = ((!! n) .) . iterate
+
+withPositions :: [[a]] -> [((Int, Int), a)]
+withPositions = concat . zipWith (\i_y ys -> zipWith (\i_x x -> ((i_x, i_y), x)) [0 ..] ys) [0 ..]
+
+type Position = (Int, Int)
+
+toArray :: [[a]] -> Array Position a
+toArray = uncurry A.array . first (((0, 0),) . fst . last) . join (,) . withPositions

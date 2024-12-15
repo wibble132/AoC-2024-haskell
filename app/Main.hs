@@ -14,29 +14,32 @@ import Day11 (part1, part2, readInput)
 import Day12 (part1, part2, readInput)
 import Day13 (part1, part2, readInput)
 import Day14 (part1, part2, readInput)
+import Day15 (part1, part2, readInput1, readInput2)
 
--- import Criterion.Main (bench, bgroup, defaultMain, whnf)
-
-main :: IO ()
-main = day dayNum testNum
-  where
-    -- The day to run
-    dayNum = 14
-    -- Which test to run. 0 for the full input (dayN.txt), other number for a test (e.g. day3-e2.txt)
-    testNum = 0
+import Criterion.Main (bench, bgroup, defaultMain, whnf)
 
 -- main :: IO ()
--- main = do
---   !input <- getInput 14
---   let !parsedInput = Day14.readInput input
---   defaultMain
---     [ bgroup
---         "day 14"
---         [ bench "parse" $ whnf Day14.readInput input,
---           bench "Part 1" $ whnf Day14.part1 parsedInput,
---           bench "Part 2" $ whnf Day14.part2 parsedInput
---         ]
---     ]
+-- main = day dayNum testNum
+--   where
+--     -- The day to run
+--     dayNum = 15
+--     -- Which test to run. 0 for the full input (dayN.txt), other number for a test (e.g. day3-e2.txt)
+--     testNum = 0
+
+main :: IO ()
+main = do
+  !input <- getInput 15
+  let !parsedInput1 = Day15.readInput1 input
+  let !parsedInput2 = Day15.readInput2 input
+  defaultMain
+    [ bgroup
+        "day 15"
+        [ bench "parse 1" $ whnf Day15.readInput1 input,
+          bench "parse 2" $ whnf Day15.readInput2 input,
+          bench "Part 1" $ whnf Day15.part1 parsedInput1,
+          bench "Part 2" $ whnf Day15.part2 parsedInput2
+        ]
+    ]
 
 day :: Int -> Int -> IO ()
 day d i = do
@@ -75,6 +78,8 @@ getDayPart d p = case (d, p) of
   (13, 2) -> Day13.part2 . Day13.readInput
   (14, 1) -> Day14.part1 . Day14.readInput
   (14, 2) -> Day14.part2 . Day14.readInput
+  (15, 1) -> Day15.part1 . Day15.readInput1
+  (15, 2) -> Day15.part2 . Day15.readInput2
   _ -> error "Unknown day part"
 
 getInput :: Int -> IO String

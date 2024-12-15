@@ -1,3 +1,8 @@
+{-# OPTIONS_GHC -Wno-unused-imports #-}
+{-# OPTIONS_GHC -Wno-unused-local-binds #-}
+{-# OPTIONS_GHC -Wno-unused-matches #-}
+{-# OPTIONS_GHC -Wno-unused-top-binds #-}
+
 module Day14 (part1, part2, readInput) where
 
 import Control.Applicative ((<|>))
@@ -103,12 +108,11 @@ roaming bounds (ps, vs) = iterate (roamStep bounds vs) ps
 searchForTree :: (Int, Int) -> Input -> Maybe Int
 searchForTree bounds xs = findIndex isTree $ zip [10000 ..] (drop 10000 . take 20000 $ roaming bounds xs)
   where
-
-    -- Found a couple of approaches here work. 
+    -- Found a couple of approaches here work.
     --  -- First can print out the images at each step, notice a couple of patterns and find when they intersect (e.g. with Chinese remainder th'm)
     --  -- Other method I tried is finding a step that minimises variance of the positions (I check the variance of x and y coordinates independently)
     --     -- Most of the time the x variance is over 800, every 101 steps it is down to about 375
-    --  -- Another method (I didn't try this at first since I didn't expect it to work...) is to find steps when all the positions are unique. 
+    --  -- Another method (I didn't try this at first since I didn't expect it to work...) is to find steps when all the positions are unique.
     -- I've commented out some of these, left it with the variance check
     isTree :: (Int, [Position]) -> Bool
     isTree (i, ps) =
