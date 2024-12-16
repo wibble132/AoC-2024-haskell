@@ -1,3 +1,6 @@
+-- Used for signatures in concatMapM
+{-# LANGUAGE ScopedTypeVariables #-}
+
 module Utils
   ( windows,
     both,
@@ -7,6 +10,7 @@ module Utils
     withPositions,
     Position,
     toArray,
+    concatMapM,
   )
 where
 
@@ -14,6 +18,7 @@ import Control.Monad (join)
 import Data.Array (Array)
 import Data.Array qualified as A
 import Data.Bifunctor (bimap, first)
+import Data.Foldable (Foldable (foldr'))
 import Data.List (tails)
 
 windows :: Int -> [a] -> [[a]]
@@ -44,3 +49,16 @@ type Position = (Int, Int)
 
 toArray :: [[a]] -> Array Position a
 toArray = uncurry A.array . first (((0, 0),) . fst . last) . join (,) . withPositions
+
+concatMapM :: forall m a b. (Monad m) => (a -> m [b]) -> [a] -> m [b]
+{-# INLINE concatMapM #-}
+concatMapM op = foldr' f (pure [])
+  where
+    f :: a -> m [b] -> m [b]
+    f x xs = do
+      y :: [b] <- op x
+      if null y
+        then xs
+        else do
+          ys :: [b] <- xs
+          pure $ y ++ ys

@@ -1,14 +1,13 @@
 module Day15 (part1, part2, readInput1, readInput2) where
 
 import Control.Arrow (Arrow (first, second))
-import Control.Monad (foldM)
 import Data.Array.IArray (Array)
 import Data.Array.IArray qualified as A
 import Data.List (find, sortOn, transpose)
 import Data.List.Split (chunk, splitOn)
 import Data.Maybe (fromJust)
 import Debug.Trace (trace)
-import Utils (Position, toArray)
+import Utils (Position, concatMapM, toArray)
 import Prelude hiding (Left, Right)
 
 part1 :: Input -> String
@@ -173,7 +172,7 @@ tryMove2 g p d
       -- Set next positions to be this block, and previous positions to be empty
       let updates = zipWith (,) nextPositions tiles ++ zipWith (,) curPositions (repeat Space)
       let alsoPush = filter (`notElem` curPositions) nextPositions
-      foldM (\acc p' -> (acc ++) <$> tryStep p') updates alsoPush
+      (updates ++) <$> (concatMapM tryStep alsoPush)
 
 wideBox :: [Tile]
 wideBox = [WideBoxLeft, WideBoxRight]
