@@ -11,6 +11,10 @@ module Utils
     Position,
     toArray,
     concatMapM,
+    Direction (..),
+    cw,
+    acw,
+    getNeighbours,
   )
 where
 
@@ -20,6 +24,7 @@ import Data.Array qualified as A
 import Data.Bifunctor (bimap, first)
 import Data.Foldable (Foldable (foldr'))
 import Data.List (tails)
+import Prelude hiding (Left, Right)
 
 windows :: Int -> [a] -> [[a]]
 windows m = foldr (zipWith (:)) (repeat []) . take m . tails
@@ -62,3 +67,22 @@ concatMapM op = foldr' f (pure [])
         else do
           ys :: [b] <- xs
           pure $ y ++ ys
+
+data Direction = Up | Right | Down | Left deriving (Show, Eq, Ord)
+
+-- Clockwise rotation
+cw :: Direction -> Direction
+cw Up = Right
+cw Right = Down
+cw Down = Left
+cw Left = Up
+
+-- Anticlockwise rotation
+acw :: Direction -> Direction
+acw Right = Up
+acw Down = Right
+acw Left = Down
+acw Up = Left
+
+getNeighbours :: Position -> [Position]
+getNeighbours (x, y) = [(x - 1, y), (x + 1, y), (x, y + 1), (x, y - 1)]
