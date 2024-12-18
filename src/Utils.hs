@@ -15,6 +15,8 @@ module Utils
     cw,
     acw,
     getNeighbours,
+    number,
+    fromParseResult,
   )
 where
 
@@ -25,6 +27,10 @@ import Data.Bifunctor (bimap, first)
 import Data.Foldable (Foldable (foldr'))
 import Data.List (tails)
 import Prelude hiding (Left, Right)
+import Prelude qualified as Pre
+import Text.Parsec (ParsecT, many, char, digit, ParseError)
+import Data.Functor.Identity (Identity)
+import Control.Applicative ((<|>))
 
 windows :: Int -> [a] -> [[a]]
 windows m = foldr (zipWith (:)) (repeat []) . take m . tails
@@ -86,3 +92,11 @@ acw Up = Left
 
 getNeighbours :: Position -> [Position]
 getNeighbours (x, y) = [(x - 1, y), (x + 1, y), (x, y + 1), (x, y - 1)]
+
+
+number :: (Read i, Integral i) => ParsecT String u Identity i
+number = read <$> (many (char '-' <|> digit))
+
+fromParseResult :: Either ParseError a -> a
+fromParseResult (Pre.Left e) = error (show e)
+fromParseResult (Pre.Right res) = res
