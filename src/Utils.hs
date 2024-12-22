@@ -3,6 +3,7 @@
 
 module Utils
   ( windows,
+    pairWindows,
     both,
     each,
     (.:),
@@ -34,6 +35,11 @@ import Control.Applicative ((<|>))
 
 windows :: Int -> [a] -> [[a]]
 windows m = foldr (zipWith (:)) (repeat []) . take m . tails
+
+pairWindows :: [b] -> [(b, b)]
+pairWindows [_] = []
+pairWindows [] = []
+pairWindows (x : xs@(y:_)) = (x, y) : pairWindows xs
 
 -- Apply a function to both elements of a pair
 both :: (a -> b) -> (a, a) -> (b, b)

@@ -105,6 +105,7 @@ solve depth =
       -- Number of inputs to press on outermost keypad
       Int
     stepsToReach = memo3 stepsToReachInner
+
     stepsToReachInner maxDepth p0 p1
       | p0 == p1 = 1 -- Apply
       | not (canHoriFirst || canVertFirst) = error "oops something wrong"
