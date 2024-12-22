@@ -20,6 +20,7 @@ import Day17 (part1, part2, readInput)
 import Day18 (part1, part2, readInput)
 import Day19 (part1, part2, readInput)
 import Day20 (part1, part2, readInput)
+import Day21 (part1, part2, readInput)
 
 -- import Criterion.Main (bench, bgroup, defaultMain, whnf)
 
@@ -27,7 +28,7 @@ main :: IO ()
 main = day dayNum testNum
   where
     -- The day to run
-    dayNum = 20
+    dayNum = 21
     -- Which test to run. 0 for the full input (dayN.txt), other number for a test (e.g. day3-e2.txt)
     testNum = 0
 
@@ -93,6 +94,8 @@ getDayPart d p = case (d, p) of
   (19, 2) -> Day19.part2 . Day19.readInput
   (20, 1) -> Day20.part1 . Day20.readInput
   (20, 2) -> Day20.part2 . Day20.readInput
+  (21, 1) -> Day21.part1 . Day21.readInput
+  (21, 2) -> Day21.part2 . Day21.readInput
   _ -> error "Unknown day part"
 
 getInput :: Int -> IO String
