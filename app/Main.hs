@@ -22,6 +22,7 @@ import Day19 (part1, part2, readInput)
 import Day20 (part1, part2, readInput)
 import Day21 (part1, part2, readInput)
 import Day22 (part1, part2, readInput)
+import Day23 (part1, part2, readInput)
 
 -- import Criterion.Main (bench, bgroup, defaultMain, whnf)
 
@@ -29,20 +30,20 @@ main :: IO ()
 main = day dayNum testNum
   where
     -- The day to run
-    dayNum = 22
+    dayNum = 23
     -- Which test to run. 0 for the full input (dayN.txt), other number for a test (e.g. 2 for day3-e2.txt)
     testNum = 0
 
 -- main :: IO ()
 -- main = do
---   !input <- getInput 21
---   let !parsedInput = Day21.readInput input
+--   !input <- getInput 23
+--   let !parsedInput = Day23.readInput input
 --   defaultMain
 --     [ bgroup
---         "day 21"
---         [ bench "parse" $ whnf Day21.readInput input,
---           bench "Part 1" $ whnf Day21.part1 parsedInput,
---           bench "Part 2" $ whnf Day21.part2 parsedInput
+--         "day 23"
+--         [ bench "parse" $ whnf Day23.readInput input,
+--           bench "Part 1" $ whnf Day23.part1 parsedInput,
+--           bench "Part 2" $ whnf Day23.part2 parsedInput
 --         ]
 --     ]
 
@@ -99,6 +100,8 @@ getDayPart d p = case (d, p) of
   (21, 2) -> Day21.part2 . Day21.readInput
   (22, 1) -> Day22.part1 . Day22.readInput
   (22, 2) -> Day22.part2 . Day22.readInput
+  (23, 1) -> Day23.part1 . Day23.readInput
+  (23, 2) -> Day23.part2 . Day23.readInput
   _ -> error "Unknown day part"
 
 getInput :: Int -> IO String

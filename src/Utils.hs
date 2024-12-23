@@ -18,6 +18,7 @@ module Utils
     getNeighbours,
     number,
     fromParseResult,
+    listToPair
   )
 where
 
@@ -106,3 +107,7 @@ number = read <$> (many (char '-' <|> digit))
 fromParseResult :: Either ParseError a -> a
 fromParseResult (Pre.Left e) = error (show e)
 fromParseResult (Pre.Right res) = res
+
+listToPair :: [a] -> (a,a)
+listToPair (x:y:_) = (x,y)
+listToPair _ = error "Invalid pair"
