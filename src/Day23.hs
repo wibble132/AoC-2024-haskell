@@ -16,7 +16,7 @@ part1 :: Input -> String
 part1 = show . length . filter (any (headIs 't')) . findTriples
 
 part2 :: Input -> String
-part2 = show . maximum . map length . M.elems
+part2 = intercalate "," . largestClique
 
 readInput :: String -> Input
 readInput = pairsToMaps . readPairs
