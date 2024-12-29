@@ -2,7 +2,7 @@ module Day23 (part1, part2, readInput) where
 
 import Data.Bifunctor (second)
 import Data.Function (on)
-import Data.List (find, intercalate, maximumBy, sort)
+import Data.List (find, intercalate, maximumBy)
 import Data.List.Split (splitOneOf)
 import Data.Map.Strict (Map)
 import Data.Map.Strict qualified as M

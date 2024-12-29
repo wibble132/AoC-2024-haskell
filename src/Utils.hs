@@ -18,21 +18,21 @@ module Utils
     getNeighbours,
     number,
     fromParseResult,
-    listToPair
+    listToPair,
   )
 where
 
+import Control.Applicative (Alternative ((<|>)))
 import Control.Monad (join)
 import Data.Array (Array)
 import Data.Array qualified as A
 import Data.Bifunctor (bimap, first)
 import Data.Foldable (Foldable (foldr'))
+import Data.Functor.Identity (Identity)
 import Data.List (tails)
+import Text.Parsec (ParseError, ParsecT, char, digit, many)
 import Prelude hiding (Left, Right)
 import Prelude qualified as Pre
-import Text.Parsec (ParsecT, many, char, digit, ParseError)
-import Data.Functor.Identity (Identity)
-import Control.Applicative ((<|>))
 
 windows :: Int -> [a] -> [[a]]
 windows m = foldr (zipWith (:)) (repeat []) . take m . tails
@@ -40,7 +40,7 @@ windows m = foldr (zipWith (:)) (repeat []) . take m . tails
 pairWindows :: [b] -> [(b, b)]
 pairWindows [_] = []
 pairWindows [] = []
-pairWindows (x : xs@(y:_)) = (x, y) : pairWindows xs
+pairWindows (x : xs@(y : _)) = (x, y) : pairWindows xs
 
 -- Apply a function to both elements of a pair
 both :: (a -> b) -> (a, a) -> (b, b)
@@ -100,7 +100,6 @@ acw Up = Left
 getNeighbours :: Position -> [Position]
 getNeighbours (x, y) = [(x - 1, y), (x + 1, y), (x, y + 1), (x, y - 1)]
 
-
 number :: (Read i, Integral i) => ParsecT String u Identity i
 number = read <$> (many (char '-' <|> digit))
 
@@ -108,6 +107,6 @@ fromParseResult :: Either ParseError a -> a
 fromParseResult (Pre.Left e) = error (show e)
 fromParseResult (Pre.Right res) = res
 
-listToPair :: [a] -> (a,a)
-listToPair (x:y:_) = (x,y)
+listToPair :: [a] -> (a, a)
+listToPair (x : y : _) = (x, y)
 listToPair _ = error "Invalid pair"
