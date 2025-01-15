@@ -1,79 +1,67 @@
 module Day03 (part1, part2) where
 
-import Control.Applicative ((<|>))
+import Control.Applicative (Alternative (empty), asum, (<|>))
+import Control.Monad (guard)
+import Data.Bifunctor (first, second)
 import Data.Either (fromRight)
 import Data.Functor.Identity (Identity)
-import Text.Parsec.Prim (ParsecT, unexpected)
-import Text.ParserCombinators.Parsec (ParseError, many, parse, try)
-import Text.ParserCombinators.Parsec.Char
-  ( anyChar,
-    char,
-    digit,
-    string,
-  )
-
-type ParsedInput = [ParsedInputItem]
-
-data ParsedInputItem
-  = Mul Integer Integer
-  | Do
-  | Dont
-  | Junk Char
-  deriving (Show)
+import Text.Parsec (ParsecT, anyChar, char, digit, getState, many, modifyState, runParser, string, try)
 
 part1 :: String -> String
-part1 = show . sum . map getValue . fromRight [] . parseInput
-  where
-    getValue :: ParsedInputItem -> Integer
-    getValue (Mul x y) = x * y
-    getValue _ = 0
+part1 = show . fromRight 0 . runParser doParse1 (True, 0) "input"
 
 part2 :: String -> String
-part2 = show . snd . foldl getValue (True, 0) . fromRight [] . parseInput
-  where
-    getValue :: (Bool, Integer) -> ParsedInputItem -> (Bool, Integer)
-    getValue (True, tot) (Mul x y) = (True, tot + x * y)
-    getValue (False, tot) (Mul _ _) = (False, tot)
-    getValue x (Junk _) = x
-    getValue (_, tot) Do = (True, tot)
-    getValue (_, tot) Dont = (False, tot)
+part2 = show . fromRight 0 . runParser doParse2 (True, 0) "input"
 
-parseInput :: [Char] -> Either ParseError ParsedInput
-parseInput =
-  parse
-    ( many $
-        try parseMul
-          <|> try parseDont
-          <|> try parseDo
-          <|> parseJunk
-    )
-    "input"
+doParse1 :: ParsecT String State Identity Integer
+doParse1 = do
+  _ <- many $ try parseMul <|> parseJunk
+  (_, res) <- getState
+  pure res
 
-parseJunk :: ParsecT [Char] u Identity ParsedInputItem
-parseJunk = Junk <$> anyChar
+doParse2 :: ParsecT String State Identity Integer
+doParse2 = do
+  _ <- many $ do
+    (b, _) <- getState
+    asum
+      [ f b (try parseMul),
+        try parseDont,
+        try parseDo,
+        parseJunk
+      ]
+  (_, res) <- getState
+  pure res
 
-parseMul :: ParsecT [Char] u Identity ParsedInputItem
+f :: (Alternative m) => Bool -> m a -> m a
+f b x = if b then x else empty
+
+parseJunk :: ParsecT [Char] State Identity ()
+parseJunk = anyChar >> pure ()
+
+parseMul :: ParsecT [Char] State Identity ()
 parseMul = do
   _ <- string "mul("
   num1 <- parseNum
   _ <- char ','
   num2 <- parseNum
   _ <- char ')'
-  return $ Mul (read num1) (read num2)
+  modifyState (second (+ (num1 * num2)))
 
-parseNum :: ParsecT [Char] u Identity [Char]
+parseNum :: ParsecT [Char] u Identity Integer
 parseNum = do
   num <- many digit
-  if not (null num) && length num <= 3
-    then return num
-    else unexpected "Wrong number of digits"
+  guard (not (null num) && length num <= 3)
+  pure $ read num
 
-parseDo :: ParsecT [Char] u Identity ParsedInputItem
+parseDo :: ParsecT [Char] State Identity ()
 parseDo = do
   _ <- string "do()"
-  return Do
+  modifyState (first (const True))
 
-parseDont :: ParsecT [Char] u Identity ParsedInputItem
+parseDont :: ParsecT [Char] State Identity ()
 parseDont = do
   _ <- string "don't()"
-  return Dont
+  modifyState (first (const False))
+
+--
+type State = (Bool, Integer)
